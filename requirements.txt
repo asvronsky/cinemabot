@@ -50,3 +50,6 @@ psutil==6.0.0
 
 # types
 types-requests==2.32.0.20240907
+
+# packages
+setuptools==75.1.0
