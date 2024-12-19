@@ -24,7 +24,7 @@ async def get_movie_details(movie_id):
                     fact = random.choice(facts) if facts else None
                 else:
                     fact = None
-                description = data.get('description', 'Описание отсутствует')
+                description = data.get('description', 'Описание отсутствует').split('\n')[0]
                 return description, fact
             except Exception as e:
                 logging.error(f"Failed to parse JSON response for details: {e}")
@@ -40,7 +40,6 @@ async def get_random_review_title(movie_id):
         async with session.get(url, headers=headers) as response:
             try:
                 data = await response.json()
-                logging.debug(f"Reviews response JSON: {data}")
                 if 'docs' in data and len(data['docs']) > 0:
                     titles = [review['title'] for review in data['docs'] if review['title']]
                     return random.choice(titles) if titles else None
@@ -56,7 +55,6 @@ async def get_online_viewing_link(query):
         async with session.get(url) as response:
             try:
                 data = await response.json()
-                logging.debug(f"Google Search API response JSON: {data}")
                 if 'items' in data and len(data['items']) > 0:
                     return data['items'][0]['link'], data['items'][0]['title']
             except Exception as e:
