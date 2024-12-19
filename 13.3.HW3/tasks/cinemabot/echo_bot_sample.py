@@ -1,37 +1,24 @@
-import asyncio
 import os
 
-from aiogram import Bot, Dispatcher, types
-from aiogram.types import BotCommand
-from aiogram.filters.command import Command
-from aiogram import F
+from aiogram import Bot, types
+from aiogram.dispatcher import Dispatcher
+from aiogram.utils import executor
 import aiohttp
 
+
 bot = Bot(token=os.environ['BOT_TOKEN'])
-dp = Dispatcher()
-
-async def on_startup(bot: Bot):
-    await bot.set_my_commands([
-        BotCommand(command="/start", description="Start the bot"),
-        BotCommand(command="/help", description="Get help")
-    ])
+dp = Dispatcher(bot)
 
 
-@dp.message(Command(commands=["start", "help"]))
+@dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: types.Message):
-    await message.answer("Hi!\nI'm EchoBot!\nPowered by aiogram.")
+    await message.reply("Hi!\nI'm EchoBot!\nPowered by aiogram.")
 
 
-@dp.message(F.text)
+@dp.message_handler()
 async def echo(message: types.Message):
-    if message.text:
-        await message.answer(message.text)
+    await message.reply(message.text)
 
 
-async def main():
-    await on_startup(bot)
-    await dp.start_polling(bot)
-
-
-if __name__ == "__main__":
-    asyncio.run(main())
+if __name__ == '__main__':
+    executor.start_polling(dp)
