@@ -127,7 +127,7 @@ async def search_and_send_movie(message: types.Message) -> None:
         star_rating = get_star_rating(movie_details['rating'])
         kinopoisk_url = f"https://www.kinopoisk.ru/film/{movie_details['id']}/"
         response_text = (
-            f"<b>Название</b>:"
+            f"<b>Название</b>: "
             f'<a href="{kinopoisk_url}">{movie_details["title"]}</a>\n'
             f"<b>Рейтинг</b>: {star_rating} ({movie_details['rating']})\n"
             f"<b>Описание</b>: {movie_details['description']}"
@@ -144,9 +144,11 @@ async def search_and_send_movie(message: types.Message) -> None:
             temp_response_text = response_text + \
                 f"\n<b>Интересный факт</b>: {movie_details['fact']}" + \
                 half_response
-            if len(temp_response_text) < 4096:
+            if len(temp_response_text) < 1200:
                 response_text = temp_response_text
             else:
+                logging.info(f"Message is too long for a fact: "
+                             f"{len(temp_response_text)}")
                 response_text += half_response
         else:
             response_text += half_response
