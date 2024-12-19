@@ -3,7 +3,6 @@ import os
 from aiogram import Bot, types
 from aiogram.dispatcher import Dispatcher
 from aiogram.utils import executor
-import aiohttp
 
 
 bot = Bot(token=os.environ['BOT_TOKEN'])
